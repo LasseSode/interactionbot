@@ -25,14 +25,14 @@ module.exports = async (req, res) => {
             },
             {
               type: 'message',
-              text: 'vote',
+              text: 'like',
               style: {
                 bold: true
               }
             },
             {
               type: 'message',
-              text: 'Click a button to vote your Favorite food'
+              text: 'Write like to the Interaction Robot if you are happy with what the lecturer is doing.'
             }
           ]
         }

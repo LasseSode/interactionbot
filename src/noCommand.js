@@ -22,15 +22,11 @@ module.exports = async (req, res) => {
             },
             {
               type: 'message',
-              text: 'vote',
+              text: 'like, question "text", lag, reexplain',
               style: {
                 bold: true
               }
             },
-            {
-              type: 'message',
-              text: 'Click a button to vote your Favorite food'
-            }
           ]
         }
       });
