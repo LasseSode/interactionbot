@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
       res.send('fail');
     }
   }
-  else{
+  else {
     res.send('fail');
   }
 };
