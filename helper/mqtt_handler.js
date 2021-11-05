@@ -76,7 +76,10 @@ const client = mqtt.connect(connectUrl, {
                 console.error(error)
             }
         })
+        client.end()
     })
+
+    
 }
 
 function sad() {
@@ -99,6 +102,18 @@ function happy() {
 
 module.exports = {
     publishArmUp: function () {
+        const host = 'broker.emqx.io'
+        const port = '1883'
+        const clientId = `cloudinteractionMqtt`
+        
+        const connectUrl = `http://${host}:${port}`
+        
+        const client = mqtt.connect(connectUrl, {
+            clientId,
+            clean: true,
+            connectTimeout: 4000,
+            reconnectPeriod: 1000,
+        })
 
         client.on('connect', () => {
             console.log('Connected')
@@ -108,9 +123,9 @@ module.exports = {
                 if (error) {
                     console.error(error)
                 }
-            }, (complete) => {
-                client.end()
-            })
+            });
+
+            client.end()
         });
 
     },
