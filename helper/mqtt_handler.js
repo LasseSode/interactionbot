@@ -26,21 +26,23 @@ const mqtt = require('mqtt')
 
 // });
 
-const host = 'broker.emqx.io'
-const port = '1883'
-const clientId = `cloudinteractionMqtt`
+// const host = 'broker.emqx.io'
+// const port = '1883'
+// const clientId = `cloudinteractionMqtt`
 
-const connectUrl = `http://${host}:${port}`
+// const connectUrl = `http://${host}:${port}`
 
-const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    reconnectPeriod: 1000,
-})
+// const client = mqtt.connect(connectUrl, {
+//     clientId,
+//     clean: true,
+//     connectTimeout: 4000,
+//     reconnectPeriod: 1000,
+// })
 
 
 function armUp() {
+
+    
 
     topic = "armUp"
     client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
@@ -53,6 +55,19 @@ function armUp() {
 }
 
 function armDown() {
+    const host = 'broker.emqx.io'
+const port = '1883'
+const clientId = `cloudinteractionMqtt`
+
+const connectUrl = `http://${host}:${port}`
+
+const client = mqtt.connect(connectUrl, {
+    clientId,
+    clean: true,
+    connectTimeout: 4000,
+    reconnectPeriod: 1000,
+})
+
     client.on('connect', () => {
         console.log('Connected')
         topic = "armDown"
