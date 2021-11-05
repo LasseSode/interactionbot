@@ -16,7 +16,7 @@ function armUp() {
         reconnectPeriod: 1000,
     })
 client.on('connect', () => {
-        console.log('Connected down')
+        console.log('Connected up')
     topic = "armUp"
     client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
         if (error) {
