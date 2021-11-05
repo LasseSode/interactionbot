@@ -11,6 +11,7 @@ module.exports = async (req, res) => {
 		let { toJid, userJid, accountId, cmd } = payload;
 		try {
 			aurdino.question();
+			mqtthandler.publishArmUp()
 			var result = await zoomApp.sendMessage({
 				to_jid: config.owner,
 				account_id: zoomWebhook.payload.accountId,
@@ -29,7 +30,6 @@ module.exports = async (req, res) => {
 				}
 			});
 			console.log(JSON.stringify(result))
-			mqtthandler.publishArmUp()
 			res.send('success');
 		} catch (e) {
 			res.send('fail');

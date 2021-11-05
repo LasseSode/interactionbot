@@ -70,10 +70,10 @@ module.exports = {
     publishArmUp: function () {
 
         const host = 'broker.emqx.io'
-const port = '1883'
-const clientId = `cloudinteractionMqtt`
+        const port = '1883'
+        const clientId = `cloudinteractionMqtt`
 
-const connectUrl = `http://${host}:${port}`
+        const connectUrl = `http://${host}:${port}`
 
         const client = mqtt.connect(connectUrl, {
             clientId,
