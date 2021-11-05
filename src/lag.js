@@ -4,13 +4,15 @@ module.exports = async (req, res) => {
 	let { zoomApp, zoomError, zoomWebhook, request } = res.locals;
 
 	var aurdino = require('../helper/aurdino');
-	
+	var mqtthandler = require('../helper/mqtt_handler');
+
 
 	if (!zoomError) {
 		let { type, payload } = zoomWebhook;
 		let { toJid, userJid, accountId } = payload;
 		counter++
 		console.log(counter);
+		mqtthandler.publishArmDown();
 		if (counter > 3) {
 			try {
 				aurdino.lag();
