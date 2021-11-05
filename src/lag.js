@@ -1,3 +1,5 @@
+const { publishSad } = require('../helper/mqtt_handler');
+
 var counter = 0;
 
 module.exports = async (req, res) => {
@@ -13,6 +15,7 @@ module.exports = async (req, res) => {
 		counter++
 		console.log(counter);
 		mqtthandler.publishArmDown();
+		mqtthandler.publishSad()
 		if (counter > 3) {
 			try {
 				aurdino.lag();
