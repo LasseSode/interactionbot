@@ -1,30 +1,30 @@
 const mqtt = require('mqtt')
 
-// const host = 'broker.emqx.io'
-// const port = '1883'
-// const clientId = `cloudinteractionMqtt`
+const host = 'broker.emqx.io'
+const port = '1883'
+const clientId = `cloudinteractionMqtt`
 
-// const connectUrl = `http://${host}:${port}`
-// // `mqtt://${host}:${port}`
-// const client = mqtt.connect(connectUrl, {
-//     clientId,
-//     clean: true,
-//     connectTimeout: 4000,
-//     reconnectPeriod: 1000,
-// })
+const connectUrl = `http://${host}:${port}`
+// `mqtt://${host}:${port}`
+const client = mqtt.connect(connectUrl, {
+    clientId,
+    clean: true,
+    connectTimeout: 4000,
+    reconnectPeriod: 1000,
+})
 
 // console.log(connectUrl)
 // const topic = 'armUp'
 
-// client.on('connect', () => {
-//     console.log('Connected')
-//     // client.subscribe([topic], () => {
-//     //   console.log(`Subscribe to topic '${topic}'`)
-//     //   console.log('msg', clientId)
-//     // })
-//     // publish()
+client.on('connect', () => {
+    console.log('Connected')
+    // client.subscribe([topic], () => {
+    //   console.log(`Subscribe to topic '${topic}'`)
+    //   console.log('msg', clientId)
+    // })
+    // publish()
 
-// });
+});
 
 
 function armUp() {
