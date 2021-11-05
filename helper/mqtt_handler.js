@@ -15,16 +15,17 @@ function armUp() {
         connectTimeout: 4000,
         reconnectPeriod: 1000,
     })
-    client.on('connect', () => {
+client.on('connect', () => {
         console.log('Connected down')
-        topic = "armUp"
-        client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
-            if (error) {
-                console.error(error)
-            }
-        })
+    topic = "armUp"
+    client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
+        if (error) {
+            console.error(error)
+        }
+    }, (complete) => {
         client.end()
     })
+})
 }
 
 function armDown() {
@@ -44,8 +45,9 @@ function armDown() {
             if (error) {
                 console.error(error)
             }
+        }, (complete) => {
+            client.end()
         })
-        client.end()
     })
 
 
@@ -66,8 +68,9 @@ function sad() {
             if (error) {
                 console.error(error)
             }
+        }, (complete) => {
+            client.end()
         })
-        client.end()
     })
 }
 
@@ -85,8 +88,9 @@ function happy() {
             if (error) {
                 console.error(error)
             }
+        }, (complete) => {
+            client.end()
         })
-        client.end()
     })
 }
 
