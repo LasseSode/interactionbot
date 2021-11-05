@@ -27,7 +27,7 @@ client.on('connect', () => {
 });
 
 
-function publishArmUp() {
+function armUp() {
 
     topic = "armUp"
     client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
@@ -39,7 +39,7 @@ function publishArmUp() {
     })
 }
 
-function publishArmDown() {
+function armDown() {
     topic = "armDown"
     client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
         if (error) {
@@ -48,7 +48,7 @@ function publishArmDown() {
     })
 }
 
-function publishSad() {
+function sad() {
     topic = "sad"
     client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
         if (error) {
@@ -57,7 +57,7 @@ function publishSad() {
     })
 }
 
-function publishHappy() {
+function happy() {
     topic = "happy"
     client.publish(topic, "message from cloud - happyface", { qos: 0, retain: false }, (error) => {
         if (error) {
@@ -68,19 +68,19 @@ function publishHappy() {
 
 module.exports = {
     publishArmUp: function () {
-        publishArmUp();
+        armUp();
     },
 
     publishArmDown: function () {
-        publishArmDown();
+        armDown();
     },
 
     publishSad: function () {
-        publishSad();
+        sad();
     },
 
     publishHappy: function () {
-        publishHappy();
+        happy();
     },
 
 }
