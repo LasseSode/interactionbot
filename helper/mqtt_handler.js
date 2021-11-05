@@ -16,15 +16,15 @@ const client = mqtt.connect(connectUrl, {
 console.log(connectUrl)
 // const topic = 'armUp'
 
-client.on('connect', () => {
-    console.log('Connected')
-    // client.subscribe([topic], () => {
-    //   console.log(`Subscribe to topic '${topic}'`)
-    //   console.log('msg', clientId)
-    // })
-    // publish()
+// client.on('connect', () => {
+//     console.log('Connected')
+//     // client.subscribe([topic], () => {
+//     //   console.log(`Subscribe to topic '${topic}'`)
+//     //   console.log('msg', clientId)
+//     // })
+//     // publish()
 
-});
+// });
 
 
 function armUp() {
@@ -68,14 +68,18 @@ function happy() {
 
 module.exports = {
     publishArmUp: function () {
-        topic = "armUp"
-        client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
-            if (error) {
-                console.error(error)
-            }
-        }, (complete) => {
-            client.end()
-        })
+        client.on('connect', () => {
+            console.log('Connected')
+            topic = "armUp"
+            client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
+                if (error) {
+                    console.error(error)
+                }
+            }, (complete) => {
+                client.end()
+            })
+        });
+
     },
 
     publishArmDown: function () {
