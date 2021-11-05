@@ -1,19 +1,19 @@
 const mqtt = require('mqtt')
 
-const host = 'broker.emqx.io'
-const port = '1883'
-const clientId = `cloudinteractionMqtt`
+// const host = 'broker.emqx.io'
+// const port = '1883'
+// const clientId = `cloudinteractionMqtt`
 
-const connectUrl = `http://${host}:${port}`
-// `mqtt://${host}:${port}`
-const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    reconnectPeriod: 1000,
-})
+// const connectUrl = `http://${host}:${port}`
+// // `mqtt://${host}:${port}`
+// const client = mqtt.connect(connectUrl, {
+//     clientId,
+//     clean: true,
+//     connectTimeout: 4000,
+//     reconnectPeriod: 1000,
+// })
 
-console.log(connectUrl)
+// console.log(connectUrl)
 // const topic = 'armUp'
 
 // client.on('connect', () => {
@@ -69,6 +69,12 @@ function happy() {
 module.exports = {
     publishArmUp: function () {
 
+        const host = 'broker.emqx.io'
+const port = '1883'
+const clientId = `cloudinteractionMqtt`
+
+const connectUrl = `http://${host}:${port}`
+
         const client = mqtt.connect(connectUrl, {
             clientId,
             clean: true,
@@ -79,6 +85,7 @@ module.exports = {
         client.on('connect', () => {
             console.log('Connected')
             topic = "armUp"
+            console.log
             client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
                 if (error) {
                     console.error(error)
