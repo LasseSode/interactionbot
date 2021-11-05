@@ -6,25 +6,38 @@ const clientId = `cloudinteractionMqtt`
 
 const connectUrl = `http://${host}:${port}`
 // `mqtt://${host}:${port}`
+// const client = mqtt.connect(connectUrl, {
+//     clientId,
+//     clean: true,
+//     connectTimeout: 4000,
+//     reconnectPeriod: 1000,
+// })
+
+// // console.log(connectUrl)
+// // const topic = 'armUp'
+
+// client.on('connect', () => {
+//     console.log('Connected')
+//     // client.subscribe([topic], () => {
+//     //   console.log(`Subscribe to topic '${topic}'`)
+//     //   console.log('msg', clientId)
+//     // })
+//     // publish()
+
+// });
+
+const host = 'broker.emqx.io'
+const port = '1883'
+const clientId = `cloudinteractionMqtt`
+
+const connectUrl = `http://${host}:${port}`
+
 const client = mqtt.connect(connectUrl, {
     clientId,
     clean: true,
     connectTimeout: 4000,
     reconnectPeriod: 1000,
 })
-
-// console.log(connectUrl)
-// const topic = 'armUp'
-
-client.on('connect', () => {
-    console.log('Connected')
-    // client.subscribe([topic], () => {
-    //   console.log(`Subscribe to topic '${topic}'`)
-    //   console.log('msg', clientId)
-    // })
-    // publish()
-
-});
 
 
 function armUp() {
@@ -40,11 +53,14 @@ function armUp() {
 }
 
 function armDown() {
-    topic = "armDown"
-    client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
-        if (error) {
-            console.error(error)
-        }
+    client.on('connect', () => {
+        console.log('Connected')
+        topic = "armDown"
+        client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
     })
 }
 
@@ -68,19 +84,6 @@ function happy() {
 
 module.exports = {
     publishArmUp: function () {
-
-        const host = 'broker.emqx.io'
-        const port = '1883'
-        const clientId = `cloudinteractionMqtt`
-
-        const connectUrl = `http://${host}:${port}`
-
-        const client = mqtt.connect(connectUrl, {
-            clientId,
-            clean: true,
-            connectTimeout: 4000,
-            reconnectPeriod: 1000,
-        })
 
         client.on('connect', () => {
             console.log('Connected')
