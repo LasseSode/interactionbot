@@ -23,6 +23,11 @@ client.on('connect', () => {
             console.error(error)
         }
     })
+    client.publish(topic, "message from cloud - happyface", { qos: 0, retain: false }, (error) => {
+        if (error) {
+            console.error(error)
+        }
+    })
     client.end()
 })
 }
@@ -41,6 +46,11 @@ function armDown() {
         console.log('Connected down')
         topic = "armDown"
         client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
+        client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
             if (error) {
                 console.error(error)
             }
