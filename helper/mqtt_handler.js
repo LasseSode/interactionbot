@@ -28,7 +28,7 @@ client.on('connect', () => {
             console.error(error)
         }
     })
-    // client.end()
+    client.end()
 })
 }
 
@@ -55,7 +55,7 @@ function armDown() {
                 console.error(error)
             }
         })
-        // client.end()
+        client.end()
     })
 
 
