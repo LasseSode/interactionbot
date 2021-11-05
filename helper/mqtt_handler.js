@@ -22,9 +22,8 @@ client.on('connect', () => {
         if (error) {
             console.error(error)
         }
-    }, (complete) => {
-        client.end()
     })
+    client.end()
 })
 }
 
@@ -45,9 +44,8 @@ function armDown() {
             if (error) {
                 console.error(error)
             }
-        }, (complete) => {
-            client.end()
         })
+        client.end()
     })
 
 
@@ -68,9 +66,8 @@ function sad() {
             if (error) {
                 console.error(error)
             }
-        }, (complete) => {
-            client.end()
         })
+        client.end()
     })
 }
 
@@ -88,9 +85,8 @@ function happy() {
             if (error) {
                 console.error(error)
             }
-        }, (complete) => {
-            client.end()
         })
+        client.end()
     })
 }
 
