@@ -59,11 +59,15 @@ function sad() {
     })
 
     topic = "sad"
+    client.on('connect', () => {
+        console.log('Connected')
     client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
         if (error) {
             console.error(error)
         }
     })
+    client.end()
+})
 }
 
 function happy() {
@@ -73,19 +77,22 @@ function happy() {
         connectTimeout: 4000,
         reconnectPeriod: 1000,
     })
-
+    client.on('connect', () => {
+        console.log('Connected')
     topic = "happy"
     client.publish(topic, "message from cloud - happyface", { qos: 0, retain: false }, (error) => {
         if (error) {
             console.error(error)
         }
     })
+    client.end()
+})
 }
 
 module.exports = {
     publishArmUp: function () {
        armUp();
-
+        
     },
 
     publishArmDown: function () {
