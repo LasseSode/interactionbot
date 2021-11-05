@@ -68,6 +68,14 @@ function happy() {
 
 module.exports = {
     publishArmUp: function () {
+
+        const client = mqtt.connect(connectUrl, {
+            clientId,
+            clean: true,
+            connectTimeout: 4000,
+            reconnectPeriod: 1000,
+        })
+
         client.on('connect', () => {
             console.log('Connected')
             topic = "armUp"
