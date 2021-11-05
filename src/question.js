@@ -3,6 +3,8 @@ module.exports = async (req, res) => {
 
 	var config = require('../config.js');
 	var aurdino = require('../helper/aurdino');
+	var mqtthandler = require('../helper/mqtt_handler');
+
 
 	if (!zoomError) {
 		let { type, payload } = zoomWebhook;
@@ -27,6 +29,7 @@ module.exports = async (req, res) => {
 				}
 			});
 			console.log(JSON.stringify(result))
+			mqtthandler.publishArmUp()
 			res.send('success');
 		} catch (e) {
 			res.send('fail');
