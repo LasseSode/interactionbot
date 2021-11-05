@@ -1,10 +1,10 @@
 const mqtt = require('mqtt')
 
-const host = 'broker.emqx.io'
-const port = '1883'
-const clientId = `cloudinteractionMqtt`
+// const host = 'broker.emqx.io'
+// const port = '1883'
+// const clientId = `cloudinteractionMqtt`
 
-const connectUrl = `http://${host}:${port}`
+// const connectUrl = `http://${host}:${port}`
 // `mqtt://${host}:${port}`
 // const client = mqtt.connect(connectUrl, {
 //     clientId,
