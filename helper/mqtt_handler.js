@@ -7,7 +7,7 @@ const clientId = `cloudinteractionMqtt`
 const connectUrl = `http://${host}:${port}`
 
 
-function armUp() {
+function publish(topic) {
 
     const client = mqtt.connect(connectUrl, {
         clientId,
@@ -15,68 +15,10 @@ function armUp() {
         connectTimeout: 4000,
         reconnectPeriod: 1000,
     })
-client.on('connect', () => {
+    client.on('connect', () => {
         console.log('Connected up')
-    topic = "armUp"
-    client.publish(topic, "message from cloud - armUp", { qos: 0, retain: false }, (error) => {
-        if (error) {
-            console.error(error)
-        }
-    })
-    topic = "happy"
 
-    client.publish(topic, "message from cloud - happyface", { qos: 0, retain: false }, (error) => {
-        if (error) {
-            console.error(error)
-        }
-    })
-    client.end()
-})
-}
-
-function armDown() {
-
-
-    const client = mqtt.connect(connectUrl, {
-        clientId,
-        clean: true,
-        connectTimeout: 4000,
-        reconnectPeriod: 1000,
-    })
-
-    client.on('connect', () => {
-        console.log('Connected down')
-        topic = "armDown"
-        client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
-            if (error) {
-                console.error(error)
-            }
-        })
-        topic = "sad"
-
-        client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
-            if (error) {
-                console.error(error)
-            }
-        })
-        client.end()
-    })
-
-
-}
-
-function sad() {
-    const client = mqtt.connect(connectUrl, {
-        clientId,
-        clean: true,
-        connectTimeout: 4000,
-        reconnectPeriod: 1000,
-    })
-
-    topic = "sad"
-    client.on('connect', () => {
-        console.log('Connected sad')
-        client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
+        client.publish(topic, "message from cloud - " + topic, { qos: 0, retain: false }, (error) => {
             if (error) {
                 console.error(error)
             }
@@ -85,42 +27,56 @@ function sad() {
     })
 }
 
-function happy() {
-    const client = mqtt.connect(connectUrl, {
-        clientId,
-        clean: true,
-        connectTimeout: 4000,
-        reconnectPeriod: 1000,
-    })
-    client.on('connect', () => {
-        console.log('Connected happy')
-        topic = "happy"
-        client.publish(topic, "message from cloud - happyface", { qos: 0, retain: false }, (error) => {
-            if (error) {
-                console.error(error)
-            }
-        })
-        client.end()
-    })
-}
+// function Question() {
+
+
+//     const client = mqtt.connect(connectUrl, {
+//         clientId,
+//         clean: true,
+//         connectTimeout: 4000,
+//         reconnectPeriod: 1000,
+//     })
+
+//     client.on('connect', () => {
+//         console.log('Connected down')
+//         topic = "armDown"
+//         client.publish(topic, "message from cloud - armDown", { qos: 0, retain: false }, (error) => {
+//             if (error) {
+//                 console.error(error)
+//             }
+//         })
+//         topic = "sad"
+
+//         client.publish(topic, "message from cloud - sadface", { qos: 0, retain: false }, (error) => {
+//             if (error) {
+//                 console.error(error)
+//             }
+//         })
+//         client.end()
+//     })
+
+
+// }
+
+
+
+
 
 module.exports = {
-    publishArmUp: function () {
-        armUp();
-
+    lag: function () {
+        publish("lag")
     },
 
-    publishArmDown: function () {
-        armDown();
-
+    question: function () {
+        publish("question")
     },
 
-    publishSad: function () {
-        sad();
+    reexplain: function () {
+        publish("reexplain")
     },
 
-    publishHappy: function () {
-        happy();
+    like: function () {
+        publish("like")
     },
 
 }

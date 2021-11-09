@@ -147,7 +147,8 @@ board.on("ready", function () {
 	lcd.useChar("ascchart1");
 	//sad eyes
 	lcd.useChar("cent");
-	happyFace(lcd); //initialize robot to be happy
+	// happyFace(lcd); //initialize robot to be happy
+	neutralFace(lcd) //intialize robot to be neutral
 	//stepping(stepper);
 
 
@@ -155,24 +156,40 @@ board.on("ready", function () {
 	function keyController(_, key) {
 		if (key) {
 			if (key.name === "up") {
-				happyFace(lcd);
+				// happyFace(lcd);
+				console.log("lag")
+				lag(lcd, leftvibmotor, stepper);
 			}
 			if (key.name === "down") {
-				sadFace(lcd);
+				// sadFace(lcd);
+				console.log("reexplain")
+				reexplain(lcd, leftvibmotor, stepper);
 			}
 			if (key.name === "right") {
-				steppingUp(stepper, 1000);
+				// steppingUp(stepper, 1000);
+				console.log("like")
+				like(lcd);
 			}
 			if (key.name === "left") {
-				steppingDown(stepper, 1000);
+				// steppingDown(stepper, 1000);
+				console.log("question")
+				question(lcd, leftvibmotor, stepper);
 			}
 			if (key.name === "k") {
 				shaking(stepper, 3)
 			}
 
 			if (key.name === "p") {
-				runMotor(leftvibmotor)
-				setTimeout(() => { runMotor(rightvibmotor) }, 2000)
+				questionMotor(leftvibmotor)
+				// setTimeout(() => { runMotor(rightvibmotor) }, 2000)
+			}
+			if (key.name === "o") {
+				reexplainMotor(leftvibmotor)
+				// setTimeout(() => { runMotor(rightvibmotor) }, 2000)
+			}
+			if (key.name === "i") {
+				lagMotor(leftvibmotor)
+				// setTimeout(() => { runMotor(rightvibmotor) }, 2000)
 			}
 		}
 	}
@@ -185,14 +202,14 @@ board.on("ready", function () {
 
 
 
-
+// MQTT HANDLING PART
 
 	client.on('message', function (topic, payload) {
 
 		console.log("topic " + topic + " payload" + payload.toString())
 		var message = payload.toString();
 
-		if (topic == "armUp") {
+		if (topic == "lag") {
 			if (!stepperOccupied) {
 				stepperOccupied = true;
 				steppingUp(stepper, 1000);
@@ -203,7 +220,7 @@ board.on("ready", function () {
 			//sadFace(lcd)
 
 		}
-		if (topic == "armDown") {
+		if (topic == "like") {
 			if (!stepperOccupied) {
 				stepperOccupied = true;
 				steppingDown(stepper, 1000);
@@ -213,10 +230,10 @@ board.on("ready", function () {
 			}
 
 		}
-		if (topic == "sad") {
+		if (topic == "question") {
 			sadFace(lcd);
 		}
-		if (topic == "happy") {
+		if (topic == "reexplain") {
 			happyFace(lcd);
 
 		}
@@ -247,6 +264,15 @@ function happyFace(lcd) {
 	lcd.home()
 }
 
+function neutralFace(lcd) {
+	lcd.clear();
+	lcd.home()
+	lcd.cursor(0, 5).print("|O   O|");
+	lcd.cursor(1, 7).print("---");
+	lcd.cursor(1, 16).blink(); //hide cursor
+	lcd.home()
+}
+
 function sadFace(lcd) {
 	lcd.clear();
 
@@ -258,38 +284,48 @@ function sadFace(lcd) {
 }
 
 function steppingUp(stepper, steps) {
-	if (!armisup) {
-		// set stepper to rpm, CW
-		stepper.rpm(rpm).direction(Stepper.DIRECTION.CW)
+	if (!stepperOccupied) {
+		if (!armisup) {
+			stepperOccupied = true;
+			// set stepper to rpm, CW
+			stepper.rpm(rpm).direction(Stepper.DIRECTION.CW)
 
-		// make half a revolution 
-		stepper.step(steps, () => {
-			console.log("done moving CW");
-		});
-		armisup = true;
-
+			// make half a revolution 
+			stepper.step(steps, () => {
+				console.log("done moving UP");
+			});
+			armisup = true;
+			setTimeout(() => { stepperOccupied = false; }, 2000)
+		}
+		else {
+			console.log("arm is already up")
+		}
+	} else {
+		console.log("arm is occupied, try again later")
 	}
-	else {
-		console.log("arm is already up")
-	}
-
 }
 
 function steppingDown(stepper, steps) {
-	if (armisup) {
+	if (!stepperOccupied) {
+		if (armisup) {
+			stepperOccupied = true;
 
-		// set stepp[er to 45 rpm, CCW
-		stepper.rpm(rpm).direction(Stepper.DIRECTION.CCW)
+			// set stepp[er to 45 rpm, CCW
+			stepper.rpm(rpm).direction(Stepper.DIRECTION.CCW)
 
-		// make half a revolution 
-		stepper.step(steps, () => {
-			console.log("done moving CCW");
-		});
-		armisup = false;
+			// make half a revolution 
+			stepper.step(steps, () => {
+				console.log("done moving DOWN");
+			});
+			armisup = false;
+			setTimeout(() => { stepperOccupied = false; }, 2000)
 
-	}
-	else {
-		console.log("arm is already down")
+		}
+		else {
+			console.log("arm is already down")
+		}
+	} else {
+		console.log("arm is occupied, try again later")
 	}
 }
 
@@ -298,8 +334,9 @@ function steppingDown(stepper, steps) {
 
 function shaking(stepper, shakes) {
 	let i = 0;
+	let started_startedshaking = false;
 	if (armisup) {
-
+		// console.log("do i ever go here")
 		interval = setInterval(() => {
 			if (armisup) {
 				steppingDown(stepper, 200)
@@ -307,14 +344,21 @@ function shaking(stepper, shakes) {
 				steppingUp(stepper, 200)
 				i += 1;
 				if (i >= shakes) {
-					clearInterval(interval); armisup = true;
+					// console.log("started shaking:", started_startedshaking)
+					clearInterval(interval); 
+					armisup = true;
+					started_startedshaking = false;
 				}
 			}
 		}, 1000)
 
-	} else {
-		console.log("arm isn't up - can't shake")
+	} else if(i<shakes && !armisup && !started_startedshaking) {
+		started_startedshaking = true;
+		steppingUp(stepper, 200)
+		board.wait(400, () => shaking(stepper, shakes))
+		console.log("arm wasn't up - will shake in a moment")
 	}
+	
 }
 
 function streamBroke(stepper) {
@@ -329,22 +373,90 @@ function streamBroke(stepper) {
 
 }
 
-function runMotor(motor) {
-	console.log("this is motor thing is called")
-	motor.on("start", () => {
-		console.log(`start: ${Date.now()}`);
+function reexplainMotor(motor) {
+	console.log("reexplain vib pattern")
+	//Pattern for Reexplain - DO NOT DELETE
+	board.wait(500, () => { motor.start(255) })
+	board.wait(1000, () => { motor.stop() })
+	board.wait(1100, () => { motor.start(175) })
+	board.wait(1300, () => { motor.stop() })
+	board.wait(1400, () => { motor.start(175) })
+	board.wait(1600, () => { motor.stop() })
+	board.wait(1900, () => { motor.start(255) })
+	board.wait(2400, () => { motor.stop() })
+	board.wait(2500, () => { motor.start(175) })
+	board.wait(2600, () => { motor.stop() })
+	board.wait(2700, () => { motor.start(175) })
+	board.wait(2900, () => { motor.stop() })
+	board.wait(2950, () => { motor.start(255) })
+	board.wait(3400, () => { motor.stop() })
+}
 
-		// Demonstrate motor stop in 2 seconds
-		board.wait(2000, () => { motor.stop() });
-	});
 
-	// "stop" events fire when the motor is stopped.
-	motor.on("stop", () => {
-		console.log(`stop: ${Date.now()}`);
-	});
 
-	motor.start(255)
+function lag(lcd, motor, stepper) {
+	sadFace(lcd);
+	shaking(stepper, 5);
+	lagMotor(motor);
+	board.wait(25000, () => neutralFace(lcd))
+
 
 }
+function question(lcd, motor, stepper) {
+
+	happyFace(lcd)
+	questionMotor(motor);
+	steppingUp(stepper, 1000);
+	board.wait(10000, () => steppingDown(stepper, 1000))
+	board.wait(10000, () => neutralFace(lcd))
+
+}
+
+function reexplain(lcd, motor, stepper) {
+	sadFace(lcd);
+	reexplainMotor(motor);
+	board.wait(10000, () => neutralFace(lcd))
+
+}
+
+function like(lcd) {
+	happyFace(lcd);
+	board.wait(10000, () => neutralFace(lcd))
+}
+
+function lagMotor(motor) {
+	console.log("lag vib pattern")
+	//Pattern for lag - DO NOT DELETE
+	var m = 2;
+	//repeats itself 20 times - around 15 seconds, with increasing intesity the first 8 rounds, then it stagnates.
+	for (let j = 1; j < 21; j++) {
+		board.wait((750 * j), () => { motor.start(55 + (25 * m)) })
+		board.wait((750 * j) + 45 * m, () => { motor.stop() })
+		console.log((750 * j), "start")
+		console.log(90 * m, "end")
+		console.log("m", m)
+		if (m <= 10) {
+			m++;
+		}
+	}
+}
+
+function questionMotor(motor) {
+	console.log("question vib pattern")
+
+	//65 is basically lower bound of power.
+	//255 is upper bound.
+	//Pattern for question
+	board.wait(500, () => { motor.start(255) })
+	board.wait(1000, () => { motor.stop() })
+	board.wait(1100, () => { motor.start(175) })
+	board.wait(1300, () => { motor.stop() })
+	board.wait(1400, () => { motor.start(175) })
+	board.wait(1600, () => { motor.stop() })
+	board.wait(1900, () => { motor.start(255) })
+	board.wait(2400, () => { motor.stop() })
+
+}
+
 
 

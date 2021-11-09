@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 		let { toJid, userJid, accountId, cmd } = payload;
 		try {
 			aurdino.question();
-			mqtthandler.publishArmUp();
+			mqtthandler.question();
 			// mqtthandler.publishHappy();
 			var result = await zoomApp.sendMessage({
 				to_jid: config.owner,

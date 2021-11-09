@@ -14,11 +14,11 @@ module.exports = async (req, res) => {
 		let { toJid, userJid, accountId } = payload;
 		counter++
 		console.log(counter);
-		mqtthandler.publishArmDown();
 		// mqtthandler.publishSad();
 		if (counter > 3) {
 			try {
-				aurdino.lag();
+				mqtthandler.lag()
+				aurdino.lag()
 				counter = 0;
 				res.send('success');
 			} catch (e) {
