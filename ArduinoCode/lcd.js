@@ -216,11 +216,11 @@ board.on("ready", function () {
 			like(lcd)
 		}
 		if (topic == "question") {
-			question(lcd, motor, stepper)
+			question(lcd, leftvibmotor, stepper)
 
 		}
 		if (topic == "reexplain") {
-			reexplain(lcd, motor, stepper)
+			reexplain(lcd, leftvibmotor, stepper)
 		}
 
 
