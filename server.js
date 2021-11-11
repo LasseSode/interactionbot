@@ -11,8 +11,8 @@ var fs = require('fs');
 
 //https server code
 var options = {
-  key: fs.readFileSync('client-key.pem'),
-  cert: fs.readFileSync('client-cert.cert')
+  key: fs.readFileSync('../interactionbot/client-key.pem'),
+  cert: fs.readFileSync('../interactionbot/client-cert.pem')
 };
 
 var server = https.createServer(options, app);
