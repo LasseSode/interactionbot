@@ -29,6 +29,7 @@
 		"fs-extra": "^8.1.0",
 		"hbs": "^4.1.2",
 		"jsonwebtoken": "^8.5.1",
-		"keypress": "^0.2.1"
+		"keypress": "^0.2.1",
+		"openssl": "^1.1.0"
 	}
 }

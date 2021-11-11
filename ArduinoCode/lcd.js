@@ -340,7 +340,7 @@ function shaking(stepper, shakes) {
 	} else if (i < shakes && !armisup && !started_startedshaking) {
 		started_startedshaking = true;
 		steppingUp(stepper, 200)
-		board.wait(400, () => shaking(stepper, shakes))
+		board.wait(2000, () => shaking(stepper, shakes))
 		console.log("arm wasn't up - will shake in a moment")
 	}
 
@@ -383,6 +383,7 @@ function lag(lcd, motor, stepper) {
 	sadFace(lcd);
 	shaking(stepper, 5);
 	lagMotor(motor);
+	board.wait(12000, () => steppingDown(stepper, 1000))
 	board.wait(25000, () => neutralFace(lcd))
 
 
