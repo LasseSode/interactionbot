@@ -235,7 +235,6 @@ board.on("ready", function () {
 		}
 		if (topic == "reexplain") {
 			happyFace(lcd);
-
 		}
 
 
