@@ -44,11 +44,10 @@ console.log(connectUrl);
 
 client.on('connect', () => {
 	console.log('Connected')
-	client.subscribe(["armUp"]);
-	client.subscribe(["armDown"]);
-	client.subscribe(["sad"]);
-	client.subscribe(["happy"]);
-
+	client.subscribe(["question"]);
+	client.subscribe(["lag"]);
+	client.subscribe(["like"]);
+	client.subscribe(["reexplain"]);
 });
 
 
@@ -202,7 +201,7 @@ board.on("ready", function () {
 
 
 
-// MQTT HANDLING PART
+	// MQTT HANDLING PART
 
 	client.on('message', function (topic, payload) {
 
@@ -210,31 +209,18 @@ board.on("ready", function () {
 		var message = payload.toString();
 
 		if (topic == "lag") {
-			if (!stepperOccupied) {
-				stepperOccupied = true;
-				steppingUp(stepper, 1000);
-				setTimeout(() => { stepperOccupied = false; }, 2000)
-			} else {
-				console.log("arm is occupied, try again later")
-			}
-			//sadFace(lcd)
+			lag(lcd, leftvibmotor, stepper)
 
 		}
 		if (topic == "like") {
-			if (!stepperOccupied) {
-				stepperOccupied = true;
-				steppingDown(stepper, 1000);
-				setTimeout(() => { stepperOccupied = false; }, 2000)
-			} else {
-				console.log("arm is occupied, try again later")
-			}
-
+			like(lcd)
 		}
 		if (topic == "question") {
-			sadFace(lcd);
+			question(lcd, motor, stepper)
+
 		}
 		if (topic == "reexplain") {
-			happyFace(lcd);
+			reexplain(lcd, motor, stepper)
 		}
 
 
@@ -344,20 +330,20 @@ function shaking(stepper, shakes) {
 				i += 1;
 				if (i >= shakes) {
 					// console.log("started shaking:", started_startedshaking)
-					clearInterval(interval); 
+					clearInterval(interval);
 					armisup = true;
 					started_startedshaking = false;
 				}
 			}
 		}, 1000)
 
-	} else if(i<shakes && !armisup && !started_startedshaking) {
+	} else if (i < shakes && !armisup && !started_startedshaking) {
 		started_startedshaking = true;
 		steppingUp(stepper, 200)
 		board.wait(400, () => shaking(stepper, shakes))
 		console.log("arm wasn't up - will shake in a moment")
 	}
-	
+
 }
 
 function streamBroke(stepper) {
@@ -414,6 +400,8 @@ function question(lcd, motor, stepper) {
 function reexplain(lcd, motor, stepper) {
 	sadFace(lcd);
 	reexplainMotor(motor);
+	steppingUp(stepper, 1000);
+	board.wait(10000, () => steppingDown(stepper, 1000))
 	board.wait(10000, () => neutralFace(lcd))
 
 }
@@ -428,7 +416,7 @@ function lagMotor(motor) {
 	//Pattern for lag - DO NOT DELETE
 	var m = 2;
 	//repeats itself 20 times - around 15 seconds, with increasing intesity the first 8 rounds, then it stagnates.
-	for (let j = 1; j < 21; j++) {
+	for (let j = 1; j < 15; j++) {
 		board.wait((750 * j), () => { motor.start(55 + (25 * m)) })
 		board.wait((750 * j) + 45 * m, () => { motor.stop() })
 		console.log((750 * j), "start")

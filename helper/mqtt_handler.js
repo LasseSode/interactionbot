@@ -17,7 +17,6 @@ function publish(topic) {
     })
     client.on('connect', () => {
         console.log('Connected up')
-
         client.publish(topic, "message from cloud - " + topic, { qos: 0, retain: false }, (error) => {
             if (error) {
                 console.error(error)
